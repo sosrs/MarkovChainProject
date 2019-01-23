@@ -1,16 +1,29 @@
 punct={'.', '?', '!','...',',',';'}
 endpunct={'.', '?', '!','...'}
 class MarkovDict:
-    pass
+    def __init__(self,inputString:str)->None:
+        import re
+        wordList= re.findall(r"[\w'$#%&-]+|[.]{3}|[.,!?;]",inputString)
+        self.wordDict= {'start of passage':{wordList[0],}}
+        while len(wordList)>1:
+            current=wordList.pop(0)        
+            if current not in wordDict:
+                self.wordDict[current]={wordList[0],}
+            else:
+                self.wordDict[current].add(wordList[0])
+            if current in endpunct:
+                self.wordDict['start of passage'].add(wordList[0])
+            
 
 def markov_input(literature:str)->dict:
     import re
 
     #RegEx to split a string into a list of words
-    #current pattern: Any chain of alphanumerics and underscores, or punctuation
+    #current pattern: Any chain of alphanumerics and underscores, or ['$#%&-]
     #note: this will not currently handle quotations or parentheses
     wordList= re.findall(r"[\w'$#%&-]+|[.]{3}|[.,!?;]",literature)
-    print(wordList)
+    
+    #print(wordList)
     
     #Initialize the dict of words with a set for what could start a sentence.
     wordDict= {'start of passage':{wordList[0],}}
