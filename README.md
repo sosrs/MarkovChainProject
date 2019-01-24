@@ -11,7 +11,7 @@ Created the MarkovDict class to support this data structure
 Created constructor and text generator methods from old functions
 
 V 0.35
-No additional functionality, but began abstraction layer to access the MarkovDict's dictionaries
+No additional functionality, but began abstraction layer to access the MarkovDict's dictionaries\n
 Also created a function for converting a string to list of allowed words, adding a whole passage to the MarkovDict
 Began removing redundant code with creation of above functions
 Began function to add an existing MarkovDict to the current MarkovDict (only alters current)
