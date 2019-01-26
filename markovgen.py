@@ -114,8 +114,9 @@ class MarkovDict:
         #this will not change the input dict, but will change the current dict
         
         for firstkey in child.dictionary():
-            #for secondkey in child.dictionary()
-        pass
+            for secondkey in child.dictionary()[firstkey]:
+                for tally in range(child.dictionary()[firstkey][secondkey]):
+                    self.add_words(firstkey,secondkey)
     
     
     def get_the_next_word(self, firstWord:str='start of passage')->str:
