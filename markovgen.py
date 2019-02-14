@@ -56,14 +56,19 @@ class MarkovDict:
                     self.wordDict['start of passage'][nextWord]+=1
                     self.wordDict['start of passage']['total points']+=1'''
 
-    def dictionary(self)->Dict:
+    def dictionary(self, word='first level')->Dict:
         
-        #Method to access the dictionary of data in this MarkovDict
-        #this is an abstraction layer to protect precious data
-        #I should probably learn if private and public variables are a thing
+        # Method to access the dictionary of data in this MarkovDict
+        # this is an abstraction layer to protect precious data
+        # I should probably learn if private and public variables are a thing
         
         #todo: implement ability to access the second level dictionary given the first key
-        return self.wordDict
+        if word=='first level':
+            return self.wordDict
+        elif word in self.wordDict:
+            return self.wordDict[word]
+        else:
+            print(word+' is not in the first level of this Markov Dictionary')
         
     def string_to_list(self,inputString:str)->List:
         import re
