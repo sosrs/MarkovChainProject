@@ -70,11 +70,11 @@ class MarkovDict:
         else:
             print(word+' is not in the first level of this Markov Dictionary')
         
-    def string_to_list(self,inputString:str)->List:
+    def string_to_list(self,inputString:str)->list:
         import re
-        #RegEx to split a string into a list of allowed words
-        #current pattern: Any chain of alphanumerics and underscores, or ['$#%&-]
-        #note: this will not currently handle quotations or parentheses
+        # RegEx to split a string into a list of allowed words
+        # current pattern: Any chain of alphanumerics and underscores, or ['$#%&-]
+        # note: this will not currently handle quotations or parentheses
         return re.findall(r"[\w'$#%&-]+|[.]{3}|[.,!?;]",inputString)
         
     def add_words(self,currentWord:str,nextWord:str)->None:
