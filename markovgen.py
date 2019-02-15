@@ -6,19 +6,19 @@ endpunct={'.', '?', '!','...'}
 class MarkovDict:
     
     def __init__(self,inputString:str)->None:
-        #defining the set of all punctuation this supports. Any non-alphanumeric symbols not included here will be dropped.
+        # defining the set of all punctuation this supports. Any non-alphanumeric symbols not included here will be dropped.
         self.punct={'.', '?', '!','...',',',';'}
-        #defining the set of all punctuation that ends a sentence. Words that follow these could be used to begin the passage
+        # defining the set of all punctuation that ends a sentence. Words that follow these could be used to begin the passage
         self.endpunct={'.', '?', '!','...'}
         
         wordList= self.string_to_list(inputString)
         
-        #change this to account for empty strings. this would probably allow us to just use the add_string function instead of
-        #replicating it here just to be able to initialize the dictionary
+        # change this to account for empty strings. this would probably allow us to just use the add_string function
+        # instead of replicating it here just to be able to initialize the dictionary
         
-        #The structure is a dictionary with {wordA: {wordB:# of times wordB has followed A}}
-        #wordDict['start of passage'] is used to store words that begin a statement, to be able to begin the passage
-        #wordDict[wordA]['total points'] is used to store the number of data points we have for words following wordA
+        # The structure is a dictionary with {wordA: {wordB:# of times wordB has followed A}}
+        # wordDict['start of passage'] is used to store words that begin a statement, to be able to begin the passage
+        # wordDict[wordA]['total points'] is used to store the number of data points we have for words following wordA
         self.wordDict= {
             'start of passage':{
                 'total points':1,
@@ -56,7 +56,7 @@ class MarkovDict:
                     self.wordDict['start of passage'][nextWord]+=1
                     self.wordDict['start of passage']['total points']+=1'''
 
-    def dictionary(self, word='first level')->Dict:
+    def dictionary(self, word='first level')->dict:
         
         # Method to access the dictionary of data in this MarkovDict
         # this is an abstraction layer to protect precious data
@@ -97,6 +97,9 @@ class MarkovDict:
             self.wordDict[currentWord]['total points']+=1
             
     
+    def add_file(self,filename:str)->None:
+        thefile = open(filename,'r')
+
     def add_string(self, inputString:str)->None:
         
         #Adds an entire passage at a time to this MarkovDict
