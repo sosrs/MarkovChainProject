@@ -11,11 +11,6 @@ class MarkovDict:
         # defining the set of all punctuation that ends a sentence. Words that follow these could be used to begin the passage
         self.endpunct={'.', '?', '!','...'}
         
-        #wordList= self.string_to_list(inputString)
-        
-        # change this to account for empty strings. this would probably allow us to just use the add_string function
-        # instead of replicating it here just to be able to initialize the dictionary
-        
         # The structure is a dictionary with {wordA: {wordB:# of times wordB has followed A}}
         # wordDict['start of passage'] is used to store words that begin a statement, to be able to begin the passage
         # wordDict[wordA]['total points'] is used to store the number of data points we have for words following wordA
@@ -25,18 +20,6 @@ class MarkovDict:
                }
             }
         self.add_string(inputString)
-
-        '''
-        while len(wordList)>1:
-            currentWord=wordList.pop(0)
-            nextWord=wordList[0]
-            
-            self.add_words(currentWord,nextWord)
-
-            if currentWord in self.endpunct:
-                #if the current word is an ending punctuation, add the next word to dict of words that can begin the passage
-                self.add_words('start of passage',nextWord)
-                '''
 
 
     def dictionary(self, word='first level')->dict:
