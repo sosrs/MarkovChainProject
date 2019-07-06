@@ -50,20 +50,21 @@ class MarkovDict:
         #if currentWord ='start of passage', it will add the nextWord to possible beginning words
         if currentWord not in self.wordDict:
             #if the word is totally new, create the dict for words that can follow it
-            self.wordDict[currentWord]={nextWord:1,
+            self.wordDict[currentWord] = {nextWord:1,
                                         'total points':1}
         elif nextWord not in self.wordDict[currentWord]:
             #if the next word has never followed current word, add an entry for the next word in the following word dict
             #increment the number of data points for current word
-            self.wordDict[currentWord][nextWord]=1
-            self.wordDict[currentWord]['total points']+=1
+            self.wordDict[currentWord][nextWord] = 1
+            self.wordDict[currentWord]['total points'] += 1
         else:
             #increment points for next word following current word, and total points
-            self.wordDict[currentWord][nextWord]+=1
-            self.wordDict[currentWord]['total points']+=1
+            self.wordDict[currentWord][nextWord] += 1
+            self.wordDict[currentWord]['total points'] += 1
             
     
     def add_file(self,filename:str)->None:
+        # todo: build function to add a txt file all at once
         thefile = open(filename,'r')
 
     def add_string(self, inputString:str)->None:
@@ -90,57 +91,58 @@ class MarkovDict:
         # this will take another MarkovDict as an input, and add its data to this one
         # this will not change the input dict, but will change the current dict
         
-        for firstkey in child.dictionary():
-            for secondkey in child.dictionary()[firstkey]:
-                for tally in range(child.dictionary()[firstkey][secondkey]):
-                    self.add_words(firstkey, secondkey)
+        for firstKey in child.dictionary():
+            for secondKey in child.dictionary()[firstKey]:
+                for tally in range(child.dictionary()[firstKey][secondKey]):
+                    self.add_words(firstKey, secondKey)
     
     
     def get_the_next_word(self, firstWord:str='start of passage')->str:
         
-        #Given a seed word string, randomly generates a second word string from the list of words that followed it in the seed data.
-        #If no seed word is given, the function assumed you are trying to find a word to start a passage.
+        # Given a seed word string, randomly generates a second word string from the list of words that followed it
+        # in the seed data.
+        # If no seed word is given, the function assumes you are trying to find a word to start a passage.
         
         import random
-        #should put a check here for is your total data points the same as the sum of your data points
+        # should put a check here for is your total data points the same as the sum of your data points
         
-        #pick a random integer between 0 and the total amount of data points we have for firstWord
-        randInt=random.randint(0,self.wordDict[firstWord]['total points']-1)
-        counter=0
+        # pick a random integer between 0 and the total amount of data points we have for firstWord
+        randInt = random.randint(0,self.wordDict[firstWord]['total points']-1)
+        counter = 0
         
         for key in sorted(self.wordDict[firstWord]):
-            #For each wordB, add the number of times that word has followed, then check if the running total is greater than
-            #the random integer. If so, return that word. This creates a weighted probability.
+            # For each wordB, add the number of times that word has followed, then check if the running total is greater
+            # than the random integer. If so, return that word. This creates a weighted probability.
             counter = counter + self.wordDict[firstWord][key]
             if (key != 'total points') and (randInt < counter):
                 return key
         
-        #if you made it this far, that means that your random int was greater than the sum of your data points
-        #That shouldn't be possible. Exception to be coded here.
+        # if you made it this far, that means that your random int was greater than the sum of your data points
+        # That shouldn't be possible. Exception to be coded here.
         print("your rand int for ", firstWord, " is too big!")
                 
         
     def generate(self, numOfSentences:int)->str:
         
-        #Given an integer, generates that many sentences of predicted text from the stored word dictionary
-        #If the generated passage ends with a word or symbol that only ended passages from the seed text,
-        #the generator will not be able to continue and will display what it had. This behaviour should go away
-        #with enough seed data.
+        # Given an integer, generates that many sentences of predicted text from the stored word dictionary
+        # If the generated passage ends with a word or symbol that only ended passages from the seed text,
+        # the generator will not be able to continue and will display what it had. This behaviour should go away
+        # with enough seed data.
         
         import random
 
         output=[self.get_the_next_word()]
 
-        lastWord=output[0]
-        sentenceCount=0
+        lastWord = output[0]
+        sentenceCount = 0
 
         while sentenceCount<numOfSentences:
-            #if somehow we are directed to a word that does not have a next word, end the chain there
+            # if somehow we are directed to a word that does not have a next word, end the chain there
             if lastWord not in self.wordDict:
                 print("I could only make %i complete sentences:" % sentenceCount)
                 return ''.join(output)
             
-            lastWord=self.get_the_next_word(lastWord)
+            lastWord = self.get_the_next_word(lastWord)
             if lastWord in self.endpunct:
                 sentenceCount+=1
             elif lastWord not in self.punct:
@@ -149,7 +151,7 @@ class MarkovDict:
         
         return ''.join(output)
             
-#these functions were the proof of concept, and are now obsolete with the creation of the MarkovDict class
+# these functions were the proof of concept, and are now obsolete with the creation of the MarkovDict class
 def markov_input(literature:str)->dict:
     '''import re
 
@@ -190,10 +192,9 @@ def markov_output(wordDict:dict, numOfSentences:int)->str:
             output.append(' ')
         output.append(lastWord)
         
-        #if somehow we are directed to a word that does not have a next word, end the chain there
+        # if somehow we are directed to a word that does not have a next word, end the chain there
         if lastWord not in wordDict:
             print("I could only make %i complete sentences:" % sentenceCount)
             return ''.join(output)
         
     return ''.join(output)
-            
